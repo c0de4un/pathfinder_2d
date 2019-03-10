@@ -30,55 +30,61 @@
 * POSSIBILITY OF SUCH DAMAGE.
 */
 
-// HEADER
-#include "main.hpp"
+#pragma once
 
-/*
- * Runs testing of 2D path finding with Tiles.
- * 
- * @thread_safety - called from main (system/ui) thread.
- * @throws - can throw exception.
-*/
-void testPathfinding2D( )
-{
-	
-	// Print Message to the console
-	std::cout << "Testing 2D Tiles Path(Route) finding . . ." << std::endl;
-	
-	// Create TilesManager
-	mTilesManager = new path2D_TilesManager( std::string( "../../../assets/tiles_map.txt" ) );
-	
-	// 
-	
-	// Delete TilesManager
-	delete mTilesManager;
-	mTilesManager = nullptr;
-	
-	// Print Message to the console
-	std::cout << "2D Tiles Path(Route) finding test complete !" << std::endl;
-	
-}
+// -------------------------------------------------------- \\
 
-/*
- * Main
- * 
- * @thread_Safety - called from main (system/uit) thread.
- * @return - 0 if OK.
- * @throws - no exceptions.
-*/
-int main( )
+namespace c0de4un
 {
 
-	// Print to Console
-	std::cout << "Hello World !" << std::endl;
+    namespace org
+    {
 
-	// Run Test
-	testPathfinding2D( );
+        namespace path2d
+        {
+            
+            // -------------------------------------------------------- \\
 
-	// Wait for input
-	std::cin.get( );
+#ifndef C0DE4UN_ORG_PATH_2D_TILE_DECL
+#define C0DE4UN_ORG_PATH_2D_TILE_DECL
+            struct Tile;
+#endif // !C0DE4UN_ORG_PATH_2D_TILE_DECL
 
-	// Return OK
-	return( 0 );
-	
-}
+#ifndef C0DE4UN_ORG_PATH_2D_TILES_MANAGER_DECL
+#define C0DE4UN_ORG_PATH_2D_TILES_MANAGER_DECL
+            class TilesManager;
+#endif // !C0DE4UN_ORG_PATH_2D_TILES_MANAGER_DECL
+
+#ifndef C0DE4UN_ORG_PATH_2D_ROUTE_DECL
+#define C0DE4UN_ORG_PATH_2D_ROUTE_DECL
+            struct Route;
+#endif // !C0DE4UN_ORG_PATH_2D_ROUTE_DECL
+
+#ifndef C0DE4UN_ORG_PATH_2D_TMAP_DECL
+#define C0DE4UN_ORG_PATH_2D_TMAP_DECL
+            struct TMap;
+#endif // !C0DE4UN_ORG_PATH_2D_TMAP_DECL
+
+            // -------------------------------------------------------- \\
+
+        }// path2d
+
+    }// org
+
+}// c0de4un
+
+// -------------------------------------------------------- \\
+
+/* Type-alias for c0de4un::org::path2d::Tile */
+using path2D_Tile = c0de4un::org::path2d::Tile;
+
+/* Type-alias for c0de4un::org::path2d::TilesManager */
+using path2D_TilesManager = c0de4un::org::path2d::TilesManager;
+
+/* Type-alias for c0de4un::org::path2d::Route */
+using path2D_Route = c0de4un::org::path2d::Route;
+
+/* Type-alias for c0de4un::org::path2d::TMap */
+using path2D_TMap = c0de4un::org::path2d::TMap;
+
+// -------------------------------------------------------- \\

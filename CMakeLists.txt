@@ -112,13 +112,23 @@ set ( ROOT_PROJECT_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/bin/${BUILD_TYPE_DIR}/${PLATF
 # HEADERS
 # =================================================================================
 
-set ( ROOT_PROJECT_HEADERS "${SOURCES_DIR}/main.hpp" )
+# Headers
+set ( ROOT_PROJECT_HEADERS "${SOURCES_DIR}/main.hpp"
+"${SOURCES_DIR}/pch_cxx.hpp"
+"${SOURCES_DIR}/tiles/tiles_fwd.hpp"
+"${SOURCES_DIR}/tiles/Tile.hpp"
+"${SOURCES_DIR}/tiles/Route.hpp"
+"${SOURCES_DIR}/tiles/TMap.hpp"
+"${SOURCES_DIR}/tiles/TilesManager.hpp" )
 
 # =================================================================================
 # SOURCES
 # =================================================================================
 
-set ( ROOT_PROJECT_SOURCES "${SOURCES_DIR}/main.cpp" )
+# Sources
+set ( ROOT_PROJECT_SOURCES "${SOURCES_DIR}/main.cpp"
+"${SOURCES_DIR}/pch_cxx.cpp"
+"${SOURCES_DIR}/tiles/TilesManager.cpp" )
 
 # =================================================================================
 # PRECOMPILED HEADERS

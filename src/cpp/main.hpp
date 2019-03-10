@@ -1,5 +1,5 @@
 /*
-* Copyright © 2018 Denis Zyamaev (code4un@yandex.ru) All rights reserved.
+* Copyright © 2019 Denis Zyamaev (code4un@yandex.ru) All rights reserved.
 * Authors: Denis Zyamaev (code4un@yandex.ru)
 * All rights reserved.
 * API: C++ 11
@@ -32,5 +32,19 @@
 
 #pragma once
 
-// Include STL (std) io
-#include <iostream>
+// 'Precompiled-Headers'
+#include "pch_cxx.hpp"
+
+// Include TilesManager
+#include "tiles/TilesManager.hpp"
+
+/* TilesManager */
+path2D_TilesManager * mTilesManager( nullptr );
+
+/*
+ * Runs testing of 2D path finding with Tiles.
+ * 
+ * @thread_safety - called from main (system/ui) thread.
+ * @throws - can throw exception.
+*/
+static void testPathfinding2D( );

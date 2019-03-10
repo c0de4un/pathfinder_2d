@@ -30,55 +30,16 @@
 * POSSIBILITY OF SUCH DAMAGE.
 */
 
-// HEADER
-#include "main.hpp"
+#pragma once
 
-/*
- * Runs testing of 2D path finding with Tiles.
- * 
- * @thread_safety - called from main (system/ui) thread.
- * @throws - can throw exception.
-*/
-void testPathfinding2D( )
-{
-	
-	// Print Message to the console
-	std::cout << "Testing 2D Tiles Path(Route) finding . . ." << std::endl;
-	
-	// Create TilesManager
-	mTilesManager = new path2D_TilesManager( std::string( "../../../assets/tiles_map.txt" ) );
-	
-	// 
-	
-	// Delete TilesManager
-	delete mTilesManager;
-	mTilesManager = nullptr;
-	
-	// Print Message to the console
-	std::cout << "2D Tiles Path(Route) finding test complete !" << std::endl;
-	
-}
+// Include STL (std) io
+#include <iostream>
 
-/*
- * Main
- * 
- * @thread_Safety - called from main (system/uit) thread.
- * @return - 0 if OK.
- * @throws - no exceptions.
-*/
-int main( )
-{
+// Include STL std::string
+#include <string>
 
-	// Print to Console
-	std::cout << "Hello World !" << std::endl;
+// Include STL std::fstream
+#include <fstream> // ifstream
 
-	// Run Test
-	testPathfinding2D( );
-
-	// Wait for input
-	std::cin.get( );
-
-	// Return OK
-	return( 0 );
-	
-}
+// Include STL (std) vector
+#include <vector>
