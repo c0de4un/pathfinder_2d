@@ -1,9 +1,11 @@
 # Visual Studio Project Files
 /.vs/*
 
+# Visual Studio Code (VSCode) Files
+/.vscode/*
+
 # Binaries
 /bin/*
 
 # Build
 /build/*
-assets/tests/textures/Rem_fixed_format.jpg
