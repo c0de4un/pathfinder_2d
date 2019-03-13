@@ -55,7 +55,7 @@ namespace c0de4un
 			/*
 			 * TilesManager - manage 2D tiles.
 			 * 
-			 * @version 0.1.0
+			 * @version 1.0.0
 			 * @authors: Z. Denis (code4un@yandex.ru)
 			 * @since 10.03.2019
 			*/
@@ -65,11 +65,101 @@ namespace c0de4un
 			private:
 
 				// -------------------------------------------------------- \\
-
+				
 				// ===========================================================
-				// Constants
+				// Fields
 				// ===========================================================
+				
+				/* Tiles queues. Used to rotate/switch between current & next Tiles queue. */
+				std::vector<Tile*> mTilesQueue[2];
+				
+				/* Aquired Tiles queue. Used to reset unused Tiles when Route is found. */
+				std::vector<Tile*> mAquiredTiles;
+				
+				/* Start */
+				Tile * mStart;
+				
+				/* Finish */
+				Tile * mFinish;
+				
+				// ===========================================================
+				// Getter & Setter
+				// ===========================================================
+				
+				/*
+				 * Searches for available Tile with minimum steps count.
+				 * 
+				 * @thread_safety - not required.
+				 * @param srcTile - Tile to search from.
+				*/
+				Tile *const getTile_Backward( const Tile *const srcTile ) noexcept;
+				
+				// ===========================================================
+				// Methods
+				// ===========================================================
+				
+				/*
+				 * Resets not requested Tiles (candidates).
+				 * 
+				 * @thread_safety - not required.
+				 * @throws - no exceptions.
+				*/
+				void resetUnusedTiles( ) noexcept;
+				
+				/*
+				 * Searches for the available Tiles & add them to the provided queue.
+				 * 
+				 * (?) Since we don't use diagonal directions, this method
+				 * don't use cycles to read surrounding Tiles states.
+				 * 
+				 * (?) This method doesn't check map-border to reduce calculations-tile,
+				 * so all borders of a map must be reserved.
+				 * 
+				 * @thread_safety - not thread-safe (not required).
+				 * @param srcTile - Tile to search from.
+				 * @param pQueue - Tiles queue.
+				 * @param pStep - Step.
+				 * @return - 'false' if nothing found.
+				 * @throws - no exceptions.
+				*/
+				const bool searchTiles( Tile *const srcTile, std::vector<Tile*> & pQueue, const std::uint16_t & pStep ) noexcept;
+				
+				/*
+				 * Gathering (collecting) all available Tiles.
+				 * 
+				 * @thread_safety - not required.
+				 * @param srcTile - source-Tile (start).
+				 * @throws - no exceptions.
+				*/
+				void waveSearchTiles( Tile *const srcTile ) noexcept;
+				
+				/*
+				 * Builds Route (path) using backward-steps.
+				 * 
+				 * (?) Lee-Wave algorithm sorts Tiles by their steps number,
+				 * to build optimized path/route.
+				 * 
+				 * @thread_safety - not required.
+				 * @param dstTile - Route destination-Tile.
+				 * @throws - no exceptions.
+				*/
+				Route *const buildRoute( Tile *const dstTile ) noexcept;
+				
+				/*
+				 * Loads Tile-Map data.
+				 * 
+				 * @thread_safety - not thread-safe.
+				 * @param pFile - source-file.
+				 * @throws - can throw exception (file not found || io, bad_alloc)
+				*/
+				void onLoadMap( const std::string & pFile );
+				
+				// -------------------------------------------------------- \\
 
+			public:
+
+				// -------------------------------------------------------- \\
+				
 				// ===========================================================
 				// Fields
 				// ===========================================================
@@ -77,12 +167,6 @@ namespace c0de4un
 				/* Map */
 				path2D_TMap * mMap;
 				
-				// -------------------------------------------------------- \\
-
-			public:
-
-				// -------------------------------------------------------- \\
-
 				// ===========================================================
 				// Constructor
 				// ===========================================================
@@ -102,7 +186,7 @@ namespace c0de4un
 				// ===========================================================
 				// Destructor
 				// ===========================================================
-
+				
 				/*
 				 * TilesManager destructor.
 				 * 
@@ -110,20 +194,54 @@ namespace c0de4un
 				 * throws - no exceptions.
 				*/
 				~TilesManager( );
-
+				
+				// ===========================================================
+				// Getter & Setter
+				// ===========================================================
+				
+				/* Returns start-Tile. */
+				Tile *const getStart( ) const noexcept;
+				
+				/* Returns finish-Tile. */
+				Tile *const getFinish( ) const noexcept;
+				
+				/*
+				 * Search available Tiles & build shortest-Route from source-Tile to the destination-Tile.
+				 * 
+				 * (?) Route/Path is build with Lee-Wave Lagorithm, where entire
+				 * map scanned/searched for all available Tiles, then around
+				 * destination-Tile Route with lesser Tiles-count selected.
+				 * 
+				 * (?) No diagonally moves.
+				 * 
+				 * @thread_safety - not thread-safe.
+				 * @param srcTile - source-Tile (start).
+				 * @param dstTile - destination-Tile (finish).
+				 * @return - Route or null.
+				 * @throws - no exceptions.
+				*/
+				Route *const getRoute( Tile *const srcTile, Tile *const dstTile ) noexcept;
+				
 				// ===========================================================
 				// Methods
 				// ===========================================================
-
+				
 				/*
-				 * Loads Tile-Map data.
+				 * Prints Tiles to a console.
 				 * 
 				 * @thread_safety - not thread-safe.
-				 * @param pFile - source-file.
-				 * @throws - can throw exception (file not found || io, bad_alloc)
+				 * @throws - no exceptions.
 				*/
-				void onLoadMap( const std::string & pFile );
-
+				void printTiles( ) const noexcept;
+				
+				/*
+				 * Prits Tiles steps-count from destination-Tile to source-Tile.
+				 * 
+				 * @thread_safety - not required.
+				 * @throws - no exceptions.
+				*/
+				void printSteps( ) const noexcept;
+				
 				// -------------------------------------------------------- \\
 
 			}; // TilesManager

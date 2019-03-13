@@ -38,6 +38,15 @@
 // Include TilesManager
 #include "tiles/TilesManager.hpp"
 
+// Include Toute
+#include "tiles/Route.hpp"
+
+// Include Tile
+#include "tiles/Tile.hpp"
+
+// Include TMap
+#include "tiles/TMap.hpp"
+
 /* TilesManager */
 path2D_TilesManager * mTilesManager( nullptr );
 

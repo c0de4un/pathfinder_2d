@@ -48,7 +48,33 @@ void testPathfinding2D( )
 	// Create TilesManager
 	mTilesManager = new path2D_TilesManager( std::string( "../../../assets/tiles_map.txt" ) );
 	
-	// 
+	// Get start-Tile
+	path2D_Tile *const srcTile( mTilesManager->getStart( ) );
+	
+	// Get finish-Tile
+	path2D_Tile *const dstTile( mTilesManager->getFinish( ) );
+	
+	// Build Path [2 alternative-Routes]
+	path2D_Route *const route_( mTilesManager->getRoute( srcTile, dstTile ) );
+	
+	// Stop if Route not found
+	if ( route_ == nullptr )
+	{
+		
+		// Print message to the Console
+		std::cout << "route not found !" << std::endl;
+		
+		// Print Tiles
+		mTilesManager->printTiles( );
+		
+	}
+	else
+	{
+		
+		// Delete Route
+		delete route_;
+	
+	}
 	
 	// Delete TilesManager
 	delete mTilesManager;

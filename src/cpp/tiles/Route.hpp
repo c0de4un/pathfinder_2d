@@ -38,6 +38,9 @@
 // Include 'forward-declarations'
 #include "tiles_fwd.hpp"
 
+// Include Tile
+#include "Tile.hpp"
+
 // Mark c0de4un::org::path2d::Route as declared, to avoid forward-declaration.
 #define C0DE4UN_ORG_PATH_2D_ROUTE_DECL
 
@@ -47,56 +50,156 @@
 namespace c0de4un
 {
 
-    namespace org
-    {
+	namespace org
+	{
 
-        namespace path2d
-        {
+		namespace path2d
+		{
 
-            // -------------------------------------------------------- \\
+			// -------------------------------------------------------- \\
 
-            /*
-             * Route - 2D Route of Tiles.
-             * 
-             * @version 0.1.0
-             * @authors: Z. Denis (code4un@yandex.ru)
-             * @since 10.03.2019
-            */
-            struct Route final
-            {
+			/*
+			 * Route - 2D Route of Tiles.
+			 * 
+			 * @version 1.0.0
+			 * @authors: Z. Denis (code4un@yandex.ru)
+			 * @since 10.03.2019
+			*/
+			struct Route final
+			{
 
-            private:
+				// -------------------------------------------------------- \\
+				
+				// ===========================================================
+				// Fields
+				// ===========================================================
 
-                // -------------------------------------------------------- \\
+				/* Length */
+				std::uint16_t mLength;
 
-                // ===========================================================
-                // Fields
-                // ===========================================================
+				/* Tiles */
+				std::vector<Tile*> mTiles;
+				
+				/* Distance from final Tile to destination Tile (1 - max. close). */
+				std::uint16_t mDistance;
+				
+				// ===========================================================
+				// Constructor
+				// ===========================================================
+				
+				/*
+				 * Route constructor.
+				 * 
+				 * @thread_safety - not required.
+				 * @throws - can throw bad_alloc.
+				*/
+				explicit Route( )
+					: mLength( 0 ),
+					mTiles( ),
+					mDistance( 0 )
+				{
+				}
+				
+				// ===========================================================
+				// Destructor
+				// ===========================================================
+				
+				/*
+				 * Route destructor.
+				 * 
+				 * @thread_safety - not thread-safe.
+				 * @throws - no exceptions.
+				*/
+				~Route( )
+				{
+					
+					// Clear
+					this->clear( );
+					
+				}
+				
+				// ===========================================================
+				// Methods
+				// ===========================================================
+				
+				/*
+				 * Add Tile.
+				 * 
+				 * @thread_safety - not thread-safe (not required).
+				 * @param pTile - Tile.
+				 * @throws - no exceptions.
+				*/
+				void addTile( Tile *const pTile ) noexcept
+				{
+					
+					// Add Tile
+					mTiles.push_back( pTile );
+					
+					// Update Route Length
+					mLength = (std::uint16_t)mTiles.size( );
+					
+				}
+				
+				/*
+				 * Clear Route
+				 * 
+				 * @thread_safety - not thread-safe.
+				 * @throws - no exceptions.
+				*/
+				void clear( ) noexcept
+				{
+					
+					// Cancel if not Tiles added
+					if ( mTiles.empty( ) )
+						return;
+					
+					// Reset each Tile
+					for( Tile *const tile_ : mTiles )
+					{
+						
+						// Reset Tile
+						if ( tile_->mState == Tile::TILE_STATE_RESERVED )
+						{
+							
+							// Reset Tile-state
+							tile_->mState = Tile::TILE_STATE_NONE;
+							
+							// Reset Tile steps count
+							tile_->mStepID = 0;
+							
+						}
+						
+					}
+					
+					// Clear Route
+					mTiles.clear( );
+					
+				}
+				
+				// -------------------------------------------------------- \\
 
-                /* Length */
-                std::uint16_t mLength;
+			private:
 
-                /* Tiles */
-                std::vector<Tile*> mTiles;
+				// -------------------------------------------------------- \\
+				
+				// ===========================================================
+				// Deleted
+				// ===========================================================
 
-                // ===========================================================
-                // Deleted
-                // ===========================================================
+				Route( const Route & ) = delete;
+				Route & operator=( const Route & ) = delete;
+				Route( Route && ) = delete;
+				Route & operator=( Route && ) = delete;
 
-                Route( const Route & ) = delete;
-                Route & operator=( const Route & ) = delete;
-                Route( Route && ) = delete;
-                Route & operator=( Route && ) = delete;
+				// -------------------------------------------------------- \\
 
-                // -------------------------------------------------------- \\
+			};
 
-            };
+			// -------------------------------------------------------- \\
 
-            // -------------------------------------------------------- \\
+		}// path2d
 
-        }// path2d
-
-    }// org
+	}// org
 
 }// c0de4un
 

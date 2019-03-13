@@ -61,7 +61,7 @@ namespace c0de4un
 			/*
 			 * TMap - 2D Tiles Map.
 			 * 
-			 * @version 0.1.0
+			 * @version 1.0.0
 			 * @authors: Z. Denis (code4un@yandex.ru)
 			 * @since 10.03.2019
 			*/

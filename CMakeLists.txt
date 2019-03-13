@@ -29,7 +29,7 @@ cmake_minimum_required ( VERSION 3.8 FATAL_ERROR )
 set ( ROOT_PROJECT_NAME "Pathfinder2D" )
 
 # Project Version
-set ( ROOT_PROJECT_VERSION 0.1.0 )
+set ( ROOT_PROJECT_VERSION 1.0.0 )
 
 # Configure Project
 project ( ${ROOT_PROJECT_NAME} VERSION ${ROOT_PROJECT_VERSION} LANGUAGES C CXX )

@@ -55,7 +55,7 @@ namespace c0de4un
 			/*
 			 * Tile - 2D Tile.
 			 * 
-			 * @version 0.1.0
+			 * @version 1.0.0
 			 * @authors: Z. Denis (code4un@yandex.ru)
 			 * @since 10.03.2019
 			*/
@@ -67,19 +67,28 @@ namespace c0de4un
 				// ===========================================================
 				// Configs
 				// ===========================================================
-
+				
 				/* Not used Tile state */
 				static constexpr std::uint8_t TILE_STATE_NONE = 0;
-
+				
+				/* Waiting in Tiles search queue. */
+				static constexpr std::uint8_t TILE_STATE_UNCHECKED = 1;
+				
 				/* Candidate for route/path Tile state */
-				static constexpr std::uint8_t TILE_STATE_PRE_RESERVED = 1;
-
+				static constexpr std::uint8_t TILE_STATE_PRE_RESERVED = 2;
+				
 				/* Reserved by route/path Tile state */
-				static constexpr std::uint8_t TILE_STATE_RESERVED = 2;
-
+				static constexpr std::uint8_t TILE_STATE_RESERVED = 3;
+				
 				/* Occupied by some object/data Tile state */
-				static constexpr std::uint8_t TILE_STATE_OCCUPIED = 3;
-
+				static constexpr std::uint8_t TILE_STATE_OCCUPIED = 4;
+				
+				/* Start. Used for testing. */
+				static constexpr std::uint8_t TILE_STATE_START = 5;
+				
+				/* Finish. Used for testing. */
+				static constexpr std::uint8_t TILE_STATE_FINISH = 6;
+				
 				// ===========================================================
 				// Fields
 				// ===========================================================
@@ -92,6 +101,12 @@ namespace c0de4un
 
 				/* State */
 				std::uint8_t mState;
+				
+				/* Step number. */
+				std::uint16_t mStepID;
+				
+				/* Previous Tile */
+				Tile * mPrevTile;
 				
 				// ===========================================================
 				// Constructor
@@ -106,7 +121,7 @@ namespace c0de4un
 				 * @throws - can throw bad_alloc.
 				*/
 				explicit Tile( const std::uint16_t & pRow, const std::uint16_t & pCol )
-					: mRow( pRow ), mCol( pCol ), mState( TILE_STATE_NONE )
+					: mRow( pRow ), mCol( pCol ), mState( TILE_STATE_NONE ), mStepID( 0 ), mPrevTile( nullptr )
 				{
 				}
 				
@@ -122,24 +137,6 @@ namespace c0de4un
 				*/
 				~Tile( )
 				{
-				}
-				
-				// ===========================================================
-				// Methods
-				// ===========================================================
-				
-				/*
-				 * Resets current Tile state.
-				 * 
-				 * @thread_safety - no required.
-				 * @throws - no exceptions.
-				*/
-				void reset( ) noexcept
-				{
-					
-					// Reset State
-					mState = TILE_STATE_NONE;
-					
 				}
 				
 				// -------------------------------------------------------- \\
