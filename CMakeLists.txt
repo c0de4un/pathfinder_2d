@@ -1,4 +1,4 @@
-# // ------------------------------------------------------------------------------ \\
+# // ------------------------------------------------------------------------------
 # 
 # This is root CMake-File for PathFinder2D example-project.
 # 
@@ -12,14 +12,14 @@
 # API: C++ 11 is minimum.
 # Platforms: Any with C++ 11 support.
 # 
-# // ------------------------------------------------------------------------------ \\
+# // ------------------------------------------------------------------------------
 
 # =================================================================================
 # CMake Meta-Data
 # =================================================================================
 
 # CMake-Version
-cmake_minimum_required ( VERSION 3.8 FATAL_ERROR )
+cmake_minimum_required ( VERSION 3.6 FATAL_ERROR )
 
 # =================================================================================
 # PROJECT
@@ -29,10 +29,19 @@ cmake_minimum_required ( VERSION 3.8 FATAL_ERROR )
 set ( ROOT_PROJECT_NAME "Pathfinder2D" )
 
 # Project Version
-set ( ROOT_PROJECT_VERSION 1.0.0 )
+set ( ROOT_PROJECT_VERSION 1.1.2 )
 
 # Configure Project
 project ( ${ROOT_PROJECT_NAME} VERSION ${ROOT_PROJECT_VERSION} LANGUAGES C CXX )
+
+# C Version
+#set ( CMAKE_C_STANDARD 99 )
+
+# C++ Version
+#set ( CMAKE_CXX_STANDARD 11 )
+
+# Make Build Libs & Executables to be position-independent, like SHARED libs.
+#set ( CMAKE_POSITION_INDEPENDENT_CODE ON )
 
 # =================================================================================
 # CONFIG
@@ -55,23 +64,23 @@ if ( ANDROID ) # ANDROID
 elseif ( WIN32 ) # WINDOWS
 
 	# Set Directory Prefix
-	set ( PLATFORM_DIR "win32" )
-
+    set ( PLATFORM_DIR "win32" )
+    add_definitions( -DWINDOWS=1 )
 elseif ( WIN64 ) # WINDOWS x64
 
 	# Set Directory Prefix
-	set ( PLATFORM_DIR "win64" )
-
+    set ( PLATFORM_DIR "win64" )
+    add_definitions( -DWINDOWS=1 )
 elseif ( LINUX ) # LINUX
 	
 	# Set Directory Prefix
 	set ( PLATFORM_DIR "linux" )
-
+    add_definitions( -DLINUX=1 )
 elseif ( APPLE ) # APPLE
 
 	# Set Directory Prefix
-	set ( PLATFORM_DIR "apple" )
-
+    set ( PLATFORM_DIR "apple" )
+    add_definitions( -DAPPLE=1 )
 else ( ANDROID ) # ?
 	
 	# ERROR
@@ -102,8 +111,11 @@ endif ( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 # CONSTANTS
 # =================================================================================
 
+# Asset File
+add_definitions ( -DMAP_DEMO_FILE="${CMAKE_SOURCE_DIR}/assets/tiles_map.txt" )
+
 # Set Sources Dir
-set ( SOURCES_DIR "${CMAKE_SOURCE_DIR}/src/cpp" )
+set ( SOURCES_DIR "${CMAKE_SOURCE_DIR}/src/cxx" )
 
 # Set Project Bin-Output Dir
 set ( ROOT_PROJECT_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/bin/${BUILD_TYPE_DIR}/${PLATFORM_DIR}" )
@@ -113,78 +125,94 @@ set ( ROOT_PROJECT_OUTPUT_DIR "${CMAKE_SOURCE_DIR}/bin/${BUILD_TYPE_DIR}/${PLATF
 # =================================================================================
 
 # Headers
-set ( ROOT_PROJECT_HEADERS "${SOURCES_DIR}/main.hpp"
-"${SOURCES_DIR}/pch_cxx.hpp"
-"${SOURCES_DIR}/tiles/tiles_fwd.hpp"
-"${SOURCES_DIR}/tiles/Tile.hpp"
-"${SOURCES_DIR}/tiles/Route.hpp"
-"${SOURCES_DIR}/tiles/TMap.hpp"
-"${SOURCES_DIR}/tiles/TilesManager.hpp" )
+# set ( ROOT_PROJECT_HEADERS "${SOURCES_DIR}/main.hpp"
+#     # UTILS
+#     "${SOURCES_DIR}/demo/IConsoleOutput.hpp"
+#     # TILES
+#     "${SOURCES_DIR}/pathfinder2d/cfg/pathfinder2d.hpp"
+#     "${SOURCES_DIR}/pathfinder2d/core/IMap2DEventsHandler.hxx"
+#     "${SOURCES_DIR}/pathfinder2d/core/Map2D.hpp"
+#     # DEMO
+#     "${SOURCES_DIR}/demo/MapDemo.hpp" )
 
 # =================================================================================
 # SOURCES
 # =================================================================================
 
 # Sources
-set ( ROOT_PROJECT_SOURCES "${SOURCES_DIR}/main.cpp"
-"${SOURCES_DIR}/pch_cxx.cpp"
-"${SOURCES_DIR}/tiles/TilesManager.cpp" )
+# set ( ROOT_PROJECT_SOURCES "${SOURCES_DIR}/main.cpp"
+#     # UTILS
+#     "${SOURCES_DIR}/demo/IConsoleOutput.cpp"
+#     # TILES
+#     "${SOURCES_DIR}/pathfinder2d/core/Map2D.cpp"
+#     # DEMO
+#     "${SOURCES_DIR}/demo/MapDemo.cpp" )
 
 # =================================================================================
 # PRECOMPILED HEADERS
 # =================================================================================
 
 # =================================================================================
+# MODULES
+# =================================================================================
+
+# PathFinder2D.Lib.Core
+add_subdirectory ( "src/cxx/pathfinder2d" )
+
+# PathFinder2D.Demo
+add_subdirectory ( "src/cxx/demo" )
+
+# =================================================================================
 # EXECUTABLE RESOURCES
 # =================================================================================
 
 # PLATFORM
-if ( WIN32 OR WIN64 ) # Windows
-    set ( ROOT_PROJECT_RESOURCES "${CMAKE_SOURCE_DIR}/res/win32_resources.rc" )
-elseif ( LINUX ) # Linux
-    set ( ROOT_PROJECT_RESOURCES "" )
-elseif ( MAC ) # Mac
-    set ( ROOT_PROJECT_RESOURCES "" )
-else ( WIN32 OR WIN64 ) # Unknown
-	message ( SEND_ERROR "${ROOT_PROJECT_NAME} - executable resources configuration required !" )
-endif ( WIN32 OR WIN64 ) # Windows
+# if ( WIN32 OR WIN64 ) # Windows
+#     set ( ROOT_PROJECT_RESOURCES "${CMAKE_SOURCE_DIR}/res/win32_resources.rc" )
+# elseif ( LINUX ) # Linux
+#     set ( ROOT_PROJECT_RESOURCES "" )
+# elseif ( MAC ) # Mac
+#     set ( ROOT_PROJECT_RESOURCES "" )
+# else ( WIN32 OR WIN64 ) # Unknown
+# 	message ( SEND_ERROR "${ROOT_PROJECT_NAME} - executable resources configuration required !" )
+# endif ( WIN32 OR WIN64 ) # Windows
 
 # =================================================================================
 # BUILD EXECUTABLE
 # =================================================================================
 
 # PLATFORM
-if ( WIN32 OR WIN64 ) # Windows
+# if ( WIN32 OR WIN64 ) # Windows
 
-    # Create Executable Object
-    add_executable ( pathfinder_2d ${ROOT_PROJECT_SOURCES} ${ROOT_PROJECT_HEADERS} ${ROOT_PROJECT_RESOURCES} )
+#     # Create Executable Object
+#     add_executable ( pathfinder_2d ${ROOT_PROJECT_SOURCES} ${ROOT_PROJECT_HEADERS} ${ROOT_PROJECT_RESOURCES} )
 
-    # Configure Executable Object
-    set_target_properties ( pathfinder_2d PROPERTIES
-    OUTPUT_NAME "${ROOT_PROJECT_NAME}"
-    RUNTIME_OUTPUT_DIRECTORY ${ROOT_PROJECT_OUTPUT_DIR} )
+#     # Configure Executable Object
+#     set_target_properties ( pathfinder_2d PROPERTIES
+#     OUTPUT_NAME "${ROOT_PROJECT_NAME}"
+#     RUNTIME_OUTPUT_DIRECTORY ${ROOT_PROJECT_OUTPUT_DIR} )
 
-elseif ( LINUX ) # Linux
+# elseif ( LINUX ) # Linux
 
-    # Create Executable Object
-    add_executable ( pathfinder_2d ${ROOT_PROJECT_SOURCES} ${ROOT_PROJECT_HEADERS} ${ROOT_PROJECT_RESOURCES} )
+#     # Create Executable Object
+#     add_executable ( pathfinder_2d ${ROOT_PROJECT_SOURCES} ${ROOT_PROJECT_HEADERS} ${ROOT_PROJECT_RESOURCES} )
 
-    # Configure Executable Object
-    set_target_properties ( pathfinder_2d PROPERTIES
-    OUTPUT_NAME "${ROOT_PROJECT_NAME}"
-    RUNTIME_OUTPUT_DIRECTORY ${ROOT_PROJECT_OUTPUT_DIR} )
+#     # Configure Executable Object
+#     set_target_properties ( pathfinder_2d PROPERTIES
+#     OUTPUT_NAME "${ROOT_PROJECT_NAME}"
+#     RUNTIME_OUTPUT_DIRECTORY ${ROOT_PROJECT_OUTPUT_DIR} )
 
-elseif ( MAC ) # Mac
+# elseif ( MAC ) # Mac
 
-    # Create Executable Object
-    add_executable ( pathfinder_2d ${ROOT_PROJECT_SOURCES} ${ROOT_PROJECT_HEADERS} ${ROOT_PROJECT_RESOURCES} )
+#     # Create Executable Object
+#     add_executable ( pathfinder_2d ${ROOT_PROJECT_SOURCES} ${ROOT_PROJECT_HEADERS} ${ROOT_PROJECT_RESOURCES} )
 
-    # Configure Executable Object
-    set_target_properties ( pathfinder_2d PROPERTIES
-    OUTPUT_NAME "${ROOT_PROJECT_NAME}"
-    RUNTIME_OUTPUT_DIRECTORY ${ROOT_PROJECT_OUTPUT_DIR} )
+#     # Configure Executable Object
+#     set_target_properties ( pathfinder_2d PROPERTIES
+#     OUTPUT_NAME "${ROOT_PROJECT_NAME}"
+#     RUNTIME_OUTPUT_DIRECTORY ${ROOT_PROJECT_OUTPUT_DIR} )
 
-else ( WIN32 OR WIN64 )
-    # ERROR
-    message ( FATAL_ERROR "${ROOT_PROJECT_NAME} - can't build executable for current platform, configuration rquired." )
-endif ( WIN32 OR WIN64 ) # Windows
+# else ( WIN32 OR WIN64 )
+#     # ERROR
+#     message ( FATAL_ERROR "${ROOT_PROJECT_NAME} - can't build executable for current platform, configuration rquired." )
+# endif ( WIN32 OR WIN64 ) # Windows
