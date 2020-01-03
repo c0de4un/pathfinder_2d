@@ -18,6 +18,7 @@ Made with VSCode C++.
 # Changes
 [1.0]
  - wave-search using C++ vector ;
+
 [1.1]
  - wave-search using C++ stack ;
  - OOP, Factory ;
